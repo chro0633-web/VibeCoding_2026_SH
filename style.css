@@ -54,6 +54,7 @@ header {
     top: 0;
     z-index: 1000;
     backdrop-filter: blur(10px);
+    isolation: isolate;
 }
 
 header .container {
@@ -94,11 +95,105 @@ nav ul li a {
     text-decoration: none;
     color: var(--text-primary);
     font-weight: 600;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease;
 }
 
 nav ul li a:hover {
-    color: var(--nav-hover);
+    color: #fff;
+}
+
+.main-nav ul li {
+    margin-left: 30px;
+}
+
+.submenu-panel {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 100vw;
+    max-height: 0;
+    overflow: hidden;
+    transform: translateX(-50%);
+    background: #1a1a1a;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.2);
+    transition: max-height 0.35s ease-out, opacity 0.3s ease-out,
+        visibility 0s linear 0.35s;
+}
+
+.submenu-open .submenu-panel {
+    max-height: 420px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: max-height 0.35s ease-out, opacity 0.3s ease-out,
+        visibility 0s;
+}
+
+.submenu-inner {
+    width: min(440px, calc(100% - 40px));
+    margin: 0 max(20px, calc((100vw - 1200px) / 2 + 70px)) 0 auto;
+    padding: 36px 0 42px 80px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+}
+
+.submenu-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.submenu-open .submenu-column {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.12s;
+}
+
+.submenu-column h2 {
+    margin-bottom: 5px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.submenu-column a {
+    color: #aaa;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.submenu-column a:hover,
+.submenu-column a:focus-visible {
+    color: #fff;
+}
+
+.menu-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    padding: 9px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    margin: 4px 0;
+    background: var(--text-primary);
+    transition: background-color 0.2s ease;
 }
 
 /* Theme Toggle Button */
@@ -285,16 +380,41 @@ footer {
     }
     
     header .container {
-        flex-direction: column;
-        gap: 15px;
+        flex-direction: row;
+        gap: 12px;
     }
     
     .nav-wrapper {
-        flex-direction: column;
-        gap: 15px;
+        flex-direction: row;
+        gap: 12px;
     }
     
-    nav ul li {
-        margin: 0 10px;
+    .main-nav {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .submenu-panel {
+        max-height: 0;
+    }
+
+    .submenu-open .submenu-panel {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .submenu-inner {
+        width: calc(100% - 40px);
+        margin: 0 auto;
+        padding: 24px 0 30px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px 16px;
+    }
+
+    .submenu-column {
+        gap: 8px;
     }
 }
